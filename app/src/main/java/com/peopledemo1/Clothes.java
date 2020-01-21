@@ -6,6 +6,13 @@ public class Clothes {
     private String pants;
     private String shoes;
 
+    public Clothes(String outer, String top, String pants, String shoes) {
+        this.outer = outer;
+        this.top = top;
+        this.pants = pants;
+        this.shoes = shoes;
+    }
+
     public String getOuter() {
         return outer;
     }

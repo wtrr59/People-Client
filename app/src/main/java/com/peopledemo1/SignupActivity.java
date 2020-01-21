@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -119,12 +122,30 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
 
-            ImageButton profile_btn = findViewById(R.id.signup_profile_btn);
+            CircleImageView profile_btn = findViewById(R.id.signup_profile_btn);
+
+            ExifInterface exif = null;
+            try {
+                exif = new ExifInterface(tempFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int exifOrientation;
+            int exifDegree;
+
+            if (exif != null) {
+                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                exifDegree = exifOrientationToDegrees(exifOrientation);
+            } else {
+                exifDegree = 0;
+            }
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             mBitmap = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
             mBitmap = resizeBitmap(mBitmap);
-            profile_btn.setBackground(new BitmapDrawable(mBitmap));
+            mBitmap = rotate(mBitmap, exifDegree);
+            profile_btn.setImageBitmap(mBitmap);
         }
     }
 
@@ -154,5 +175,22 @@ public class SignupActivity extends AppCompatActivity {
         byte[] b = byteArrayBitmapStream.toByteArray();
         encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
         return encodedImage;
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private Bitmap rotate(Bitmap bitmap, float degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 }

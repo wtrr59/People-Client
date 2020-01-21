@@ -9,7 +9,6 @@ public class User implements Serializable {
     private String email;
     private String profile;
     private List<SimilarPeople> prediction;
-    private List<String> feed;
 
 
     public User(String userid, String password,  String email) {
@@ -48,14 +47,6 @@ public class User implements Serializable {
 
     public void setPrediction(List<SimilarPeople> prediction) {
         this.prediction = prediction;
-    }
-
-    public List<String> getFeed() {
-        return feed;
-    }
-
-    public void setFeed(List<String> feed) {
-        this.feed = feed;
     }
 
     public String getProfile() {

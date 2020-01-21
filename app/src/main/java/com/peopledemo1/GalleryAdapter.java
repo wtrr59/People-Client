@@ -1,10 +1,14 @@
 package com.peopledemo1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 
 import androidx.annotation.NonNull;
@@ -15,14 +19,14 @@ import java.util.ArrayList;
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
     private OnItemClickListener mListener = null;
-    private ArrayList<String> feedlist = new ArrayList<>();
+    private ArrayList<GalleryItem> feedlist = new ArrayList<>();
 
     public interface OnItemClickListener {
         void OnItemClick(View v, int position);
     }
 
 
-    public void setOnItemClickListener(GalleryAdapter.OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener){
         this.mListener = listener;
     }
 
@@ -39,7 +43,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int position) {
-
+        holder.feeditem.setImageBitmap(resizeBitmap(getBitmapFromString(feedlist.get(position).getFeed_img())));
     }
 
     @Override
@@ -48,13 +52,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageButton feeditem;
+        private ImageView feeditem;
 
         ViewHolder(View itemView) {
             super(itemView) ;
 
             // 뷰 객체에 대한 참조. (hold strong reference)
             feeditem = itemView.findViewById(R.id.gallery_recycler_item);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,7 +72,29 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
     }
 
-    public void additem(String feed){
+    public void additem(GalleryItem feed){
         feedlist.add(feed);
+    }
+
+    public ArrayList<GalleryItem> getFeedlist() {
+        return feedlist;
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
+    }
+
+    static public Bitmap resizeBitmap(Bitmap original) {
+
+        int resizeWidth = 400;
+        int resizeHeight = 400;
+
+        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, resizeHeight, false);
+        if (result != original) {
+            original.recycle();
+        }
+        return result;
     }
 }

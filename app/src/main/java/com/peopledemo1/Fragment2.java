@@ -1,5 +1,6 @@
 package com.peopledemo1;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,24 +18,31 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class Fragment2 extends Fragment{
     ViewGroup viewGroup;
 
     private RecyclerView gallery_recycler;
-    private ImageView userprofile;
+    private CircleImageView userprofile;
     private TextView userid;
     private String user_email;
     private GalleryAdapter mAdapter;
-
+    private FloatingActionButton feedaddbtn;
 
     public Fragment2(String user_email) {
         this.user_email = user_email;
@@ -42,17 +50,27 @@ public class Fragment2 extends Fragment{
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment2,container,false);
 
         gallery_recycler = viewGroup.findViewById(R.id.gallery_recyclerview);
         userprofile = viewGroup.findViewById(R.id.gallery_user_profile);
         userid = viewGroup.findViewById(R.id.gallery_user_name);
+        feedaddbtn = viewGroup.findViewById(R.id.gallery_plus_feed);
 
         mAdapter = new GalleryAdapter();
-        gallery_recycler.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        gallery_recycler.addItemDecoration(new GalleryItemDecoration(20));
         gallery_recycler.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new GalleryAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                Intent intent = new Intent(getActivity(),closeupActivity.class);
+                intent.putExtra("feedid",mAdapter.getFeedlist().get(position).getFeed_id());
+                startActivity(intent);
+            }
+        });
+        gallery_recycler.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        gallery_recycler.addItemDecoration(new GalleryItemDecoration(10));
+
 
         RetrofitHelper.getApiService().receiveUser(user_email).enqueue(new Callback<User>() {
             @Override
@@ -61,16 +79,30 @@ public class Fragment2 extends Fragment{
                     User user = response.body();
                     userprofile.setImageBitmap(getBitmapFromString(user.getProfile()));
                     userid.setText(user.getUserid());
-                    if(user.getFeed().size() != 0){
-                        for(int i = 0; i < user.getFeed().size(); i++)
-                            mAdapter.additem(user.getFeed().get(i));
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                gallery_recycler.invalidateItemDecorations();
+                    RetrofitHelper.getApiService().getFeedByuserid(user.getUserid()).enqueue(new Callback<List<Feed>>() {
+                        @Override
+                        public void onResponse(Call<List<Feed>> call, Response<List<Feed>> response) {
+                            ArrayList<Feed> feedList = (ArrayList<Feed>) response.body();
+                            if(feedList != null && feedList.size() != 0) {
+                                for (int i = 0; i < feedList.size(); i++)
+                                    mAdapter.additem(new GalleryItem(feedList.get(i).getImage(), feedList.get(i).getFeedid()));
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAdapter.notifyDataSetChanged();
+                                        gallery_recycler.invalidateItemDecorations();
+                                    }
+                                });
+                            }else{
+                                Log.e("Gallery Feed error","res null");
                             }
-                        });
-                    }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Feed>> call, Throwable t) {
+                            Log.e("Gallery Feed error",t.getMessage());
+                        }
+                    });
                 }else{
                     Log.e("Gallery error","res null");
                 }
@@ -82,6 +114,14 @@ public class Fragment2 extends Fragment{
             }
         });
 
+        feedaddbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),AddPhotoActivity.class);
+                intent.putExtra("email",user_email);
+                startActivity(intent);
+            }
+        });
 
         return viewGroup;
     }

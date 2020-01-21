@@ -48,5 +48,5 @@ public interface RetrofitInterface {
     Call<Feed> getFeedByfeedid(@Path("feedid")String feedid);
 
     @POST("feeds/feed")
-    Call<String> postFeed(@Body User user);
+    Call<String> postFeed(@Body Feed feed);
 }

@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
     private ArrayList<FeedRecyclerItem> mData = null;
     private OnItemClickListener mListener = null;
@@ -60,7 +62,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView profile ;
+        CircleImageView profile ;
         TextView userID ;
         ImageView userPost ;
 

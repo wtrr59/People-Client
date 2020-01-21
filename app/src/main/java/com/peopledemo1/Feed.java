@@ -11,9 +11,13 @@ public class Feed {
     private String userid;
     private String image;
     private String profile;
-    private List<Clothes> clothes;
+    private Clothes clothes;
 
-    public Feed(String userid, String image, String profile, List<Clothes> clothes) {
+    public Feed(){
+
+    }
+
+    public Feed(String userid, String image, String profile, Clothes clothes) {
         this.feedid = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         this.userid = userid;
         this.image = image;
@@ -53,11 +57,11 @@ public class Feed {
         this.profile = profile;
     }
 
-    public List<Clothes> getClothes() {
+    public Clothes getClothes() {
         return clothes;
     }
 
-    public void setClothes(List<Clothes> clothes) {
+    public void setClothes(Clothes clothes) {
         this.clothes = clothes;
     }
 }

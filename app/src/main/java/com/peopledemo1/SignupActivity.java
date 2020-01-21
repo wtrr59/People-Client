@@ -56,7 +56,7 @@ public class SignupActivity extends AppCompatActivity {
         findViewById(R.id.signup_profile_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
     }

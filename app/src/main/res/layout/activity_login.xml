@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/people" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/loginemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/realbox"
@@ -27,7 +27,7 @@
         android:inputType="textPersonName"
         android:paddingLeft="80dp"
         android:paddingBottom="7dp"
-        android:hint="아이디"
+        android:hint="이메일"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.686" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/loginpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -53,7 +53,7 @@
         app:layout_constraintVertical_bias="0.747" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/loginbutton"
         android:layout_width="120dp"
         android:layout_height="52dp"
         android:background="@drawable/loginbutton"

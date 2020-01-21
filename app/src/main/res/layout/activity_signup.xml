@@ -9,7 +9,7 @@
     android:background="@drawable/signupactivity">
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/signup_profile_btn"
         android:layout_width="65dp"
         android:layout_height="67dp"
         android:background="@drawable/icon"
@@ -33,7 +33,7 @@
         app:srcCompat="@drawable/joinpeople" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/signup_id_edit"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/signup_password_edit"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -56,7 +56,7 @@
         app:layout_constraintVertical_bias="0.626" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/signup_email_edit"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -104,7 +104,7 @@
         app:srcCompat="@drawable/email" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signup_accept_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/joinbox"
@@ -123,10 +123,10 @@
         android:baselineAlignBottom="false"
 
         android:clickable="false"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/signup_accept_btn"
+        app:layout_constraintEnd_toEndOf="@+id/signup_accept_btn"
+        app:layout_constraintStart_toStartOf="@+id/signup_accept_btn"
+        app:layout_constraintTop_toTopOf="@+id/signup_accept_btn"
         app:srcCompat="@drawable/bepeople" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

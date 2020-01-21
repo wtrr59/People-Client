@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         //프래그먼트 생성
         fragment1 = new Fragment1();
-        fragment2 = new Fragment2();
+        fragment2 = new Fragment2(getIntent().getStringExtra("email"));
         fragment3 = new Fragment3();
 
         //처음 띄어줄 뷰 셋. commit();까지 해야함
@@ -40,13 +40,11 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                     }
 
-
                     case R.id.tab2:{
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_layout,fragment2).commitAllowingStateLoss();
                         return true;
                     }
-
 
                     case R.id.tab3:{
                         getSupportFragmentManager().beginTransaction()
@@ -54,11 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
 
-
-
                     default: return false;
-
-
                 }
             }
         });

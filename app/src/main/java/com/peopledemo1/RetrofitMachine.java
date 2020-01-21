@@ -9,11 +9,11 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitHelper {
+public class RetrofitMachine {
     private static Retrofit retrofit = null;
     private static RetrofitInterface apiService = null;
-    //private final static String API_URL = "http://8076ef61.ngrok.io";
-    private final static String API_URL = "http://192.249.19.251:8780";
+    private final static String API_URL = "http://8076ef61.ngrok.io";
+    //private final static String API_URL = "http://192.249.19.251:8780";
     static Gson gson = new GsonBuilder()
             .setLenient()
             .create();

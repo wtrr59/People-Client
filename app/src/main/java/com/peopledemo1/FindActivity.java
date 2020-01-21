@@ -77,6 +77,7 @@ public class FindActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find);
 
+        user = (User)getIntent().getSerializableExtra("userinfo");
 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         textView = findViewById(R.id.tutorial1);
@@ -94,27 +95,10 @@ public class FindActivity extends AppCompatActivity {
         fadeIn1.setStartOffset(1200+fadeIn.getStartOffset());
 
         askPermissions();
+        email = user.getEmail();
 
-        email = getIntent().getStringExtra("email");
-        RetrofitHelper.getApiService().receiveUser(email).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response != null && response.body() != null) {
-                    user = response.body();
-                    Log.e("Find Get OK", user.getUserid());
-                }else{
-                    Log.e("Find Get response null", "nooooo");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.e("Find Get error",t.getMessage());
-                t.printStackTrace();
-            }
-        });
         try {
-            mSocket = IO.socket(RetrofitHelper.getApiUrl());
+            mSocket = IO.socket(RetrofitMachine.getApiUrl());
             mSocket.connect();
             mSocket.on("Prediction", onReceivePrediction);
         } catch (URISyntaxException e) {
@@ -248,7 +232,7 @@ public class FindActivity extends AppCompatActivity {
             MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-            RetrofitHelper.getApiService().postImage(body,name).enqueue(new Callback<ResponseBody>() {
+            RetrofitMachine.getApiService().postImage(body,name).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
@@ -284,7 +268,7 @@ public class FindActivity extends AppCompatActivity {
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
         mWebSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
 
-        mWebView.loadUrl(RetrofitHelper.getApiUrl()); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        mWebView.loadUrl(RetrofitMachine.getApiUrl()); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
     }
 
     private Emitter.Listener onReceivePrediction = new Emitter.Listener() {
@@ -299,20 +283,23 @@ public class FindActivity extends AppCompatActivity {
                 Log.e("people",similarPeopleList.get(i).getName()+" : "+similarPeopleList.get(i).getProbability());
             }
             user.setPrediction(similarPeopleList);
-            RetrofitHelper.getApiService().updateUser(email,user).enqueue(new Callback<User>() {
+            RetrofitHelper.getApiService().sendSign(user).enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if(response.body() != null) {
-                        Log.e("Find Put OK", response.body().getPrediction().get(0).getName());
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                public void onResponse(Call<String> call, Response<String> response) {
+                    String res = response.body();
+                    if(res == null)
+                        Log.e("res","null");
+                    if(res != null && res.equals("성공")) {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("email",email);
+                        startActivity(intent);
                     }else
-                        Log.e("Find Put response null","ㅜ");
+                        Log.e("Signup Error","회원가입 실패");
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Log.e("Find Put error",t.getMessage());
-                    t.printStackTrace();
+                public void onFailure(Call<String> call, Throwable t) {
+
                 }
             });
         }

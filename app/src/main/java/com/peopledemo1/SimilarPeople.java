@@ -1,6 +1,8 @@
 package com.peopledemo1;
 
-public class SimilarPeople {
+import java.io.Serializable;
+
+public class SimilarPeople implements Serializable {
     private String name;
     private Double probability;
 

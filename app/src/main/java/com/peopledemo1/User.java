@@ -1,12 +1,16 @@
 package com.peopledemo1;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private String userid;
     private String password;
     private String email;
+    private String profile;
     private List<SimilarPeople> prediction;
+    private List<String> feed;
+
 
     public User(String userid, String password,  String email) {
         this.userid = userid;
@@ -44,5 +48,21 @@ public class User {
 
     public void setPrediction(List<SimilarPeople> prediction) {
         this.prediction = prediction;
+    }
+
+    public List<String> getFeed() {
+        return feed;
+    }
+
+    public void setFeed(List<String> feed) {
+        this.feed = feed;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 }

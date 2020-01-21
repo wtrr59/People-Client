@@ -1,5 +1,7 @@
 package com.peopledemo1;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -35,4 +37,16 @@ public interface RetrofitInterface {
 
     @PUT("users/user/{email}")
     Call<User> updateUser(@Path("email")String email, @Body User user);
+
+    @GET("users/user/{email}")
+    Call<ResponseBody> getProfileImage(@Path("email")String email);
+
+    @GET("feeds/userid/{userid}")
+    Call<List<Feed>> getFeedByuserid(@Path("userid")String userid);
+
+    @GET("feeds/feedid/{feedid}")
+    Call<Feed> getFeedByfeedid(@Path("feedid")String feedid);
+
+    @POST("feeds/feed")
+    Call<String> postFeed(@Body User user);
 }

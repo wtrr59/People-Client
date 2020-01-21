@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                         String res = response.body();
                         if (res != null && res.equals("성공")){
                             Intent intent2 = new Intent(context, MainActivity.class);
+                            intent2.putExtra("email",emailView.getText().toString());
                             startActivity(intent2);
                         }
                         else {

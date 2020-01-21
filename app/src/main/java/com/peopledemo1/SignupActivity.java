@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -53,55 +54,20 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 User user = new User(id_edit.getText().toString(),password_edit.getText().toString(),email_edit.getText().toString());
-
-                RetrofitHelper.getApiService().sendSign(user).enqueue(new Callback<String>() {
+                if(mBitmap == null)
+                    mBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.defaultprofile)).getBitmap();
+                user.setProfile(getStringFromBitmap(mBitmap));
+                Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+                intent.putExtra("userinfo",user);
+                startActivity(intent);
+                /*RetrofitHelper.getApiService().sendSign(user).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         String res = response.body();
                         if(res == null)
                             Log.e("res","null");
                         if(res != null && res.equals("성공")) {
-                            if(mBitmap == null)
-                                mBitmap = ((BitmapDrawable)getResources().getDrawable(R.drawable.defaultprofile)).getBitmap();
-
-                            try {
-                                File filesDir = getApplicationContext().getFilesDir();
-                                File file = new File(filesDir, email_edit.getText().toString()+".png");
-
-                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                                mBitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
-                                byte[] bitmapdata = bos.toByteArray();
-
-                                FileOutputStream fos = new FileOutputStream(file);
-                                fos.write(bitmapdata);
-                                fos.flush();
-                                fos.close();
-
-
-                                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-                                MultipartBody.Part body = MultipartBody.Part.createFormData("uploadprofile", file.getName(), reqFile);
-                                RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "uploadprofile");
-
-                                RetrofitHelper.getApiService().postProfileImage(body,name).enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                        Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_SHORT).show();
-                                        t.printStackTrace();
-                                    }
-                                });
-
-
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.putExtra("email",email_edit.getText().toString());
                             startActivity(intent);
                         }else
@@ -112,7 +78,7 @@ public class SignupActivity extends AppCompatActivity {
                     public void onFailure(Call<String> call, Throwable t) {
                         Log.e("Signup Error",t.getMessage());
                     }
-                });
+                });*/
             }
         });
 
@@ -166,12 +132,27 @@ public class SignupActivity extends AppCompatActivity {
 
         int resizeWidth = 200;
 
-        double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
-        int targetHeight = (int) (resizeWidth * aspectRatio);
-        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, targetHeight, false);
+        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, resizeWidth, false);
         if (result != original) {
             original.recycle();
         }
         return result;
+    }
+
+    private Bitmap getBitmapFromString(String stringPicture) {
+        byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
+    }
+
+    private String getStringFromBitmap(Bitmap bitmapPicture) {
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encodedImage;
     }
 }

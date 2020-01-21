@@ -8,12 +8,14 @@
     android:id="@+id/linearLayout2"
     android:background="@drawable/signupactivity">
 
-    <ImageButton
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/signup_profile_btn"
         android:layout_width="65dp"
         android:layout_height="67dp"
         android:background="@drawable/icon"
         android:stateListAnimator="@null"
+        app:civ_border_color="#000000"
+        app:civ_border_width="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

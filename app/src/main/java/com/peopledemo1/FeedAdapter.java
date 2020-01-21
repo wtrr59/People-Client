@@ -13,6 +13,16 @@ import java.util.ArrayList;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
     private ArrayList<FeedRecyclerItem> mData = null;
+    private OnItemClickListener mListener = null;
+
+    public interface OnItemClickListener {
+        void OnItemClick(View v, int position);
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+    }
 
     FeedAdapter(ArrayList<FeedRecyclerItem> list){
         mData = list ;
@@ -60,6 +70,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
             profile = itemView.findViewById(R.id.profile) ;
             userID = itemView.findViewById(R.id.identity) ;
             userPost = itemView.findViewById(R.id.feedimage) ;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION)
+                        if(mListener != null)
+                            mListener.OnItemClick(v,pos);
+                }
+            });
+
         }
     }
 

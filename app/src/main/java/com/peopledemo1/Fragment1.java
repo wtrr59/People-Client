@@ -1,5 +1,6 @@
 package com.peopledemo1;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +45,14 @@ public class Fragment1 extends Fragment{
         }
 
         feedAdapter.notifyDataSetChanged();
+
+        feedAdapter.setOnItemClickListener(new FeedAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                Intent intent = new Intent(getActivity(),closeupActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         return viewGroup;

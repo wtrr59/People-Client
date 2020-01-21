@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -68,10 +69,30 @@ public class FindActivity extends AppCompatActivity {
     private Socket mSocket;
     private User user;
 
+    TextView textView;
+    TextView textView1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find);
+
+
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        textView = findViewById(R.id.tutorial1);
+        textView1 = findViewById(R.id.tutorial2);
+
+        final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+        final AlphaAnimation fadeIn1 = new AlphaAnimation(0.0f, 1.0f);
+
+        fadeIn1.setDuration(1200);
+        fadeIn.setDuration(1200);
+
+        textView.startAnimation(fadeIn);
+        textView1.startAnimation(fadeIn1);
+        fadeIn.setStartOffset(900+fadeIn.getStartOffset());
+        fadeIn1.setStartOffset(1200+fadeIn.getStartOffset());
+
         askPermissions();
 
         email = getIntent().getStringExtra("email");

@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         String res = response.body();
-                        if (res.equals("성공")){
+                        if (res != null && res.equals("성공")){
                             Intent intent2 = new Intent(context, MainActivity.class);
                             startActivity(intent2);
                         }

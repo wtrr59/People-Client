@@ -43,7 +43,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull GalleryAdapter.ViewHolder holder, int position) {
-        holder.feeditem.setImageBitmap(resizeBitmap(getBitmapFromString(feedlist.get(position).getFeed_img())));
+        Bitmap bitmap = getBitmapFromString(feedlist.get(position).getFeed_img());
+        holder.feeditem.setImageBitmap(Bitmap.createBitmap(bitmap,bitmap.getWidth()/4,bitmap.getHeight()/4,400,400));
     }
 
     @Override

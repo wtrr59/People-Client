@@ -26,6 +26,10 @@ public interface RetrofitInterface {
     @POST("/upload")
     Call<ResponseBody> postImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
 
+    @Multipart
+    @POST("/uploadprofile")
+    Call<ResponseBody> postProfileImage(@Part MultipartBody.Part image, @Part("upload") RequestBody name);
+
     @GET("users/user/{email}")
     Call<User> receiveUser(@Path("email")String email);
 

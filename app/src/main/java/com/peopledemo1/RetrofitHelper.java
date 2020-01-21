@@ -13,6 +13,7 @@ public class RetrofitHelper {
     private static Retrofit retrofit = null;
     private static RetrofitInterface apiService = null;
     private final static String API_URL = "http://8076ef61.ngrok.io";
+    //private final static String API_URL = "http://192.249.19.251:8780";
     static Gson gson = new GsonBuilder()
             .setLenient()
             .create();

@@ -1,6 +1,7 @@
 package com.peopledemo1;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
             profile = itemView.findViewById(R.id.profile) ;
             userID = itemView.findViewById(R.id.identity) ;
             userPost = itemView.findViewById(R.id.feedimage) ;
+
+             
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

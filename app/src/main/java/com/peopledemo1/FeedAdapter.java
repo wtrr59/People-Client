@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
     private ArrayList<FeedRecyclerItem> mData = null;
     private OnItemClickListener mListener = null;
+    Context context;
 
     public interface OnItemClickListener {
         void OnItemClick(View v, int position);
@@ -72,7 +73,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
             userID = itemView.findViewById(R.id.identity) ;
             userPost = itemView.findViewById(R.id.feedimage) ;
 
-             
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                GradientDrawable drawable = (GradientDrawable) context.getDrawable(R.drawable.background_rounding);
+                userPost.setBackground(drawable);
+                userPost.setClipToOutline(true);
+            }
+
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

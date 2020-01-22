@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22dp"
+        android:fontFamily="@font/main"
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="parent" />
@@ -82,6 +83,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="12dp"
                     android:text="Today's Pick"
+                    android:fontFamily="@font/rubik"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -92,6 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/main"
                     android:text="Top"
                     android:textColor="#000000"
                     android:textSize="20sp"
@@ -105,6 +108,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="20dp"
                     android:text="Bottom"
+                    android:fontFamily="@font/main"
                     android:textColor="#000000"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,6 +122,7 @@
                     android:layout_marginTop="16dp"
                     android:text="Outer"
                     android:textColor="#000000"
+                    android:fontFamily="@font/main"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -130,6 +135,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="Shoes"
+                    android:fontFamily="@font/main"
                     android:textColor="#000000"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"

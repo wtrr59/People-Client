@@ -20,11 +20,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
     private ArrayList<Feed> mData = new ArrayList<>();
     private OnItemClickListener mListener = null;
+
     private Context mContext;
 
     public FeedAdapter(Context mContext) {
         this.mContext = mContext;
     }
+
+    Context context;
+
 
     public interface OnItemClickListener {
         void OnItemClick(View v, int position);
@@ -81,7 +85,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
             profile = itemView.findViewById(R.id.profile) ;
             userID = itemView.findViewById(R.id.identity) ;
             userPost = itemView.findViewById(R.id.feedimage) ;
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,6 +1,7 @@
 package com.peopledemo1;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,10 +37,12 @@ import retrofit2.Response;
 public class AddPhotoActivity extends AppCompatActivity {
 
     private final static int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int PICK_FROM_ALBUM = 4;
     private String user_email;
     private User userinfo;
     private Bitmap mBitmap;
     private Feed newfeed = new Feed();
+    private File tempFile;
 
     EditText outer;
     EditText top;
@@ -81,7 +85,10 @@ public class AddPhotoActivity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendTakePhotoIntent();
+                //sendTakePhotoIntent();
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
             }
         });
 
@@ -140,6 +147,55 @@ public class AddPhotoActivity extends AppCompatActivity {
             mBitmap = resizeBitmap(mBitmap);
             newfeed.setImage(getStringFromBitmap(mBitmap));
             imageButton.setImageBitmap(mBitmap);
+        }
+
+        if (requestCode == PICK_FROM_ALBUM) {
+            Uri photoUri = data.getData();
+            Cursor cursor = null;
+
+            try {
+                String[] proj = { MediaStore.Images.Media.DATA };
+
+                assert photoUri != null;
+                cursor = getContentResolver().query(photoUri, proj, null, null, null);
+
+                assert cursor != null;
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+                cursor.moveToFirst();
+
+                tempFile = new File(cursor.getString(column_index));
+
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+
+
+            ExifInterface exif = null;
+            try {
+                exif = new ExifInterface(tempFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int exifOrientation;
+            int exifDegree;
+
+            if (exif != null) {
+                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                exifDegree = exifOrientationToDegrees(exifOrientation);
+            } else {
+                exifDegree = 0;
+            }
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            mBitmap = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+            mBitmap = resizeBitmap(mBitmap);
+            mBitmap = rotate(mBitmap, exifDegree);
+            imageButton.setImageBitmap(mBitmap);
+            newfeed.setImage(getStringFromBitmap(mBitmap));
         }
     }
 

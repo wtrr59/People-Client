@@ -53,13 +53,15 @@ public class Fragment1 extends Fragment{
                             List<Feed> feedList = response.body();
                             if(feedList != null && feedList.size() != 0){
                                 for(int i = 0; i < user.getPrediction().size(); i++){
-                                    /*if(user.getPrediction().get(i).getProbability() <= 0)
-                                        continue;*/
+                                    if(user.getPrediction().get(i).getProbability()*100 < 30) {
+                                        Log.e("p: ",user.getPrediction().get(i).getProbability().toString());
+                                        continue;
+                                    }
+                                    Log.e("person name : ",user.getPrediction().get(i).getName());
                                     for(int j = 0; j < feedList.size(); j++){
                                         if(user.getPrediction().get(i).getName().equals(feedList.get(j).getUserid())){
                                             feedAdapter.addItem(feedList.get(j));
-                                            feedList.remove(j);
-                                            j--;
+                                            Log.e("feed name : ",feedList.get(j).getUserid());
                                         }
                                     }
                                 }
@@ -96,6 +98,7 @@ public class Fragment1 extends Fragment{
         feedAdapter = new FeedAdapter(getActivity().getApplicationContext());
         mRecyclerView.setAdapter(feedAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mRecyclerView.addItemDecoration(new FeedItemDecoration(100));
 
         feedAdapter.notifyDataSetChanged();
 

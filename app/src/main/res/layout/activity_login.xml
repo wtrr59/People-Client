@@ -24,27 +24,26 @@
         android:layout_height="wrap_content"
         android:background="@drawable/realbox"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:paddingLeft="80dp"
-        android:paddingBottom="7dp"
         android:hint="이메일"
+        android:inputType="textPersonName"
+        android:gravity="center_horizontal"
+        android:paddingTop="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.686" />
+        app:layout_constraintVertical_bias="0.682" />
 
     <EditText
         android:id="@+id/loginpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
         android:background="@drawable/realbox"
-        android:paddingLeft="73dp"
-        android:paddingBottom="7dp"
+        android:ems="10"
         android:hint="패스워드"
+        android:inputType="textPassword"
+        android:gravity="center_horizontal"
+        android:paddingTop="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -56,11 +55,12 @@
         android:id="@+id/loginbutton"
         android:layout_width="120dp"
         android:layout_height="52dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginLeft="90dp"
         android:background="@drawable/loginbutton"
         android:stateListAnimator="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.295"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.823" />
@@ -69,12 +69,13 @@
         android:id="@+id/login_signup"
         android:layout_width="116dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginRight="90dp"
         android:background="@drawable/singinbutton"
         android:stateListAnimator="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.698"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline16"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.82" />
 
@@ -88,5 +89,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.814"
         app:srcCompat="@drawable/divider" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="206dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,6 +37,7 @@ import static android.app.Activity.RESULT_OK;
 public class Fragment2 extends Fragment{
     ViewGroup viewGroup;
 
+    private static final int REQUEST_INVALIDATE = 3;
     private RecyclerView gallery_recycler;
     private CircleImageView userprofile;
     private TextView userid;
@@ -69,7 +70,7 @@ public class Fragment2 extends Fragment{
             }
         });
         gallery_recycler.setLayoutManager(new GridLayoutManager(getActivity(),3));
-        gallery_recycler.addItemDecoration(new GalleryItemDecoration(10));
+        gallery_recycler.addItemDecoration(new GalleryItemDecoration(5));
 
 
         RetrofitHelper.getApiService().receiveUser(user_email).enqueue(new Callback<User>() {
@@ -86,13 +87,15 @@ public class Fragment2 extends Fragment{
                             if(feedList != null && feedList.size() != 0) {
                                 for (int i = 0; i < feedList.size(); i++)
                                     mAdapter.additem(new GalleryItem(feedList.get(i).getImage(), feedList.get(i).getFeedid()));
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mAdapter.notifyDataSetChanged();
-                                        gallery_recycler.invalidateItemDecorations();
-                                    }
-                                });
+                                if(getActivity() != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mAdapter.notifyDataSetChanged();
+                                            gallery_recycler.invalidate();
+                                        }
+                                    });
+                                }
                             }else{
                                 Log.e("Gallery Feed error","res null");
                             }
@@ -119,7 +122,7 @@ public class Fragment2 extends Fragment{
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),AddPhotoActivity.class);
                 intent.putExtra("email",user_email);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent,REQUEST_INVALIDATE);
             }
         });
 
@@ -142,5 +145,13 @@ public class Fragment2 extends Fragment{
         byte[] b = byteArrayBitmapStream.toByteArray();
         encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
         return encodedImage;
+    }
+
+    public RecyclerView getGallery_recycler() {
+        return gallery_recycler;
+    }
+
+    public GalleryAdapter getmAdapter() {
+        return mAdapter;
     }
 }

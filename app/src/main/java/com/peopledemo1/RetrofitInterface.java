@@ -49,4 +49,7 @@ public interface RetrofitInterface {
 
     @POST("feeds/feed")
     Call<String> postFeed(@Body Feed feed);
+
+    @GET("feeds/all")
+    Call<List<Feed>> getFeedAll();
 }

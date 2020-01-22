@@ -6,6 +6,7 @@ public class SimilarPeople implements Serializable {
     private String name;
     private Double probability;
 
+
     public SimilarPeople(String name, Double probability) {
         this.name = name;
         this.probability = probability;

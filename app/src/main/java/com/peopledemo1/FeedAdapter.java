@@ -59,10 +59,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder>{
         holder.profile.setImageBitmap(getBitmapFromString(item.getProfile()));
         holder.userID.setText(item.getUserid()) ;
         holder.userPost.setImageBitmap(resizeBitmap(getBitmapFromString(item.getImage())));
-        GradientDrawable drawable=
-                (GradientDrawable) mContext.getDrawable(R.drawable.background_rounding);
-        holder.userPost.setBackground(drawable);
-        holder.userPost.setClipToOutline(true);
+
+
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

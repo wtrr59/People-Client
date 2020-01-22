@@ -87,15 +87,4 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return decodedByte;
     }
 
-    static public Bitmap resizeBitmap(Bitmap original) {
-
-        int resizeWidth = 400;
-        int resizeHeight = 400;
-
-        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, resizeHeight, false);
-        if (result != original) {
-            original.recycle();
-        }
-        return result;
-    }
 }

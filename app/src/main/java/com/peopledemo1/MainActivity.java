@@ -3,7 +3,11 @@ package com.peopledemo1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -13,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment1 fragment1;
     Fragment2 fragment2;
     Fragment3 fragment3;
+    private static final int REQUEST_INVALIDATE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         //프래그먼트 생성
-        fragment1 = new Fragment1();
+        fragment1 = new Fragment1(getIntent().getStringExtra("email"));
         fragment2 = new Fragment2(getIntent().getStringExtra("email"));
         fragment3 = new Fragment3();
 
@@ -56,8 +61,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_INVALIDATE && resultCode == RESULT_OK) {
+            fragment2.getmAdapter().notifyDataSetChanged();
+            fragment2.getGallery_recycler().invalidate();
+            Log.e("update","실시");
+        }
     }
 }
